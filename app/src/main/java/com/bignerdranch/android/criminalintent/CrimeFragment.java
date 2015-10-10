@@ -26,7 +26,6 @@ public class CrimeFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckbox;
-  //  private DateFormat mDateFormat;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,15 +54,6 @@ public class CrimeFragment extends Fragment {
         });
 
         mDateButton = (Button)v.findViewById(R.id.crime_date);
-       // mDateButton.setText(mCrime.getDate().toString());
-   //     Date now = new Date();
-      //  SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE, MMM d, yyyy");
-      //  mDateFormat = (DateFormat) dateFormatter.format(now);
-        //mDateButton.setText(dateFormatter.format(now));
-     //   mDateFormat = new android.text.format.DateFormat.format(now);
-        // mDateFormat = DateFormat.getDateFormat(getContext());
-       // mDateFormat = (DateFormat) DateFormat.getLongDateFormat(this.getActivity());
-        //DateFormat dateFormat = android.text.format.DateFormat.getDateFormat();
         mDateButton.setText(android.text.format.DateFormat.format("EEEE, MMM dd, yyyy", new Date()));
         mDateButton.setEnabled(false);
 
