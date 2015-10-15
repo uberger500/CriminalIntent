@@ -27,6 +27,7 @@ public class CrimeFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckbox;
+    private UUID crimeId;
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -37,20 +38,13 @@ public class CrimeFragment extends Fragment {
         return fragment;
     }
 
-    public void returnResult(Crime mCrime) {
-        Intent data = new Intent();
-        data.putExtra("clicked_crime", mCrime.getId());
-        getActivity().setResult(Activity.RESULT_OK, data);
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+        crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
-        returnResult(mCrime);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,4 +81,15 @@ public class CrimeFragment extends Fragment {
         });
         return v;
     }
+
+/*    public void returnResult() {
+        Intent intent = new Intent();
+     intent.putExtra("clicked_crime", crimeId);
+        getActivity().setResult(Activity.RESULT_OK, intent);
+    }*/
+   // @Override
+//    public void onStop() {
+  //      super.onStop();
+    //    returnResult();
+   // }
 }

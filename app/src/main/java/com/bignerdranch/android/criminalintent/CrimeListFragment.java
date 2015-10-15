@@ -1,6 +1,5 @@
 package com.bignerdranch.android.criminalintent;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,19 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * Created by ursberger1 on 10/8/15.
  */
+
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private static final int REQUEST_CRIME = 1;
-    private UUID clicked_crime;
+    private UUID clickedCrime;
     private int position;
 
     @Override
@@ -39,39 +40,22 @@ public class CrimeListFragment extends Fragment {
 
         return view;
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == REQUEST_CRIME) {
-            if( resultCode == Activity.RESULT_OK) {
-                clicked_crime = (UUID) data.getSerializableExtra("clicked_crime");
-            }
-
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUI();
-    }
 
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 
-
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
+
         } else {
 
-            for (int i = 0; i < crimes.size(); i++) {
-                if (crimes.get(i).getId() == clicked_crime) {
-                    position = i;
+           for (int i = 0; i < crimes.size(); i++) {
+                if (crimes.get(i).getId() == clickedCrime) {
+                     position = i;
                 }
             }
-
             mAdapter.notifyItemChanged(position);
         }
     }
@@ -79,19 +63,19 @@ public class CrimeListFragment extends Fragment {
     private class CrimeHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
+        private Crime mCrime;
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private CheckBox mSolvedCheckBox;
 
-        private Crime mCrime;
-
         public CrimeHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
+
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_crime_title_text_view);
             mDateTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date_text_view);
             mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_check_box);
+            itemView.setOnClickListener(this);
         }
 
         public void bindCrime(Crime crime) {
@@ -103,17 +87,24 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-           Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            clickedCrime = mCrime.getId();
+            Intent intent = CrimeActivity.newIntent(getActivity(), clickedCrime);
             startActivityForResult(intent, REQUEST_CRIME);
         }
+/*
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+            if (requestCode == REQUEST_CRIME) {
+                if( resultCode == Activity.RESULT_OK) {
+                    clickedCrime = (UUID) data.getSerializableExtra("clicked_crime");
+                }
+
+            }
+        }*/
     }
 
-
-
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
-
         private List<Crime> mCrimes;
-
         public CrimeAdapter(List<Crime> crimes) {
             mCrimes = crimes;
         }
@@ -136,5 +127,9 @@ public class CrimeListFragment extends Fragment {
             return mCrimes.size();
         }
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
 }
