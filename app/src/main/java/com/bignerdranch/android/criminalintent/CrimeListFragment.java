@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by ursberger1 on 10/8/15.
@@ -20,6 +22,9 @@ import java.util.List;
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private static final int REQUEST_CRIME = 1;
+    private UUID clicked_crime;
+    private int position;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +39,16 @@ public class CrimeListFragment extends Fragment {
 
         return view;
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_CRIME) {
+            if( resultCode == Activity.RESULT_OK) {
+                clicked_crime = (UUID) data.getSerializableExtra("clicked_crime");
+            }
+
+        }
+    }
 
     @Override
     public void onResume() {
@@ -45,11 +60,19 @@ public class CrimeListFragment extends Fragment {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 
+
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.notifyDataSetChanged();
+
+            for (int i = 0; i < crimes.size(); i++) {
+                if (crimes.get(i).getId() == clicked_crime) {
+                    position = i;
+                }
+            }
+
+            mAdapter.notifyItemChanged(position);
         }
     }
 
@@ -81,9 +104,11 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CRIME);
         }
     }
+
+
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
 

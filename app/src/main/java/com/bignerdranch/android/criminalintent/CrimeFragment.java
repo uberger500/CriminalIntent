@@ -1,5 +1,7 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -35,11 +37,19 @@ public class CrimeFragment extends Fragment {
         return fragment;
     }
 
+    public void returnResult(Crime mCrime) {
+        Intent data = new Intent();
+        data.putExtra("clicked_crime", mCrime.getId());
+        getActivity().setResult(Activity.RESULT_OK, data);
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+        returnResult(mCrime);
     }
 
     @Override
