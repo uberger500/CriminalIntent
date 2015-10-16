@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -88,10 +89,10 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             clickedCrime = mCrime.getId();
-            Intent intent = CrimeActivity.newIntent(getActivity(), clickedCrime);
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), clickedCrime);
             startActivityForResult(intent, REQUEST_CRIME);
         }
-/*
+
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
             if (requestCode == REQUEST_CRIME) {
@@ -100,7 +101,7 @@ public class CrimeListFragment extends Fragment {
                 }
 
             }
-        }*/
+        }
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
