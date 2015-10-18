@@ -23,6 +23,7 @@ import java.util.UUID;
 public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
+    private static final String RETURNED_CRIME = "returned_crime";
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
@@ -32,7 +33,6 @@ public class CrimeFragment extends Fragment {
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CRIME_ID, crimeId);
-
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(args);
         return fragment;
@@ -43,6 +43,7 @@ public class CrimeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+   //     returnResult();
     }
 
 
@@ -84,12 +85,12 @@ public class CrimeFragment extends Fragment {
 
     public void returnResult() {
         Intent intent = new Intent();
-     intent.putExtra("clicked_crime", crimeId);
+        intent.putExtra(RETURNED_CRIME, crimeId);
         getActivity().setResult(Activity.RESULT_OK, intent);
     }
-    @Override
-    public void onStop() {
-        super.onStop();
-        returnResult();
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        returnResult();
+//    }
 }

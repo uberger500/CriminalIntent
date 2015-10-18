@@ -22,11 +22,15 @@ import java.util.UUID;
  */
 
 public class CrimeListFragment extends Fragment {
+
+
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
-    private static final int REQUEST_CRIME = 1;
-    private UUID clickedCrime;
-    private int position;
+  //  private static final int REQUEST_CRIME = 1;
+  //  private UUID clickedCrime;
+  //  private UUID returnedCrime;
+  //  private int position;
+  //  private static final String RETURNED_CRIME = "returned_crime";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +45,11 @@ public class CrimeListFragment extends Fragment {
 
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
 
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
@@ -52,12 +61,12 @@ public class CrimeListFragment extends Fragment {
 
         } else {
 
-           for (int i = 0; i < crimes.size(); i++) {
-                if (crimes.get(i).getId() == clickedCrime) {
+       /*    for (int i = 0; i < crimes.size(); i++) {
+                if (crimes.get(i).getId() == returnedCrime) {
                      position = i;
                 }
-            }
-            mAdapter.notifyItemChanged(position);
+            }*/
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -71,7 +80,6 @@ public class CrimeListFragment extends Fragment {
 
         public CrimeHolder(View itemView) {
             super(itemView);
-
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_crime_title_text_view);
             mDateTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date_text_view);
@@ -88,21 +96,23 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            clickedCrime = mCrime.getId();
-            Intent intent = CrimePagerActivity.newIntent(getActivity(), clickedCrime);
-            startActivityForResult(intent, REQUEST_CRIME);
+     //       clickedCrime = mCrime.getId();
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+            startActivity(intent);
         }
 
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-            if (requestCode == REQUEST_CRIME) {
-                if( resultCode == Activity.RESULT_OK) {
-                    clickedCrime = (UUID) data.getSerializableExtra("clicked_crime");
-                }
-
-            }
-        }
     }
+ /*   @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_CRIME) {
+            if( resultCode == Activity.RESULT_OK) {
+                returnedCrime = (UUID) data.getSerializableExtra(RETURNED_CRIME);
+            }
+
+        }
+    }*/
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
         private List<Crime> mCrimes;
@@ -128,9 +138,5 @@ public class CrimeListFragment extends Fragment {
             return mCrimes.size();
         }
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUI();
-    }
+
 }
