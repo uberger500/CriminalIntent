@@ -40,7 +40,7 @@ public class DatePickerFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Date date = (Date) getArguments().getSerializable(ARG_DATE);
 
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -62,7 +62,9 @@ public class DatePickerFragment extends DialogFragment {
                         int year = mDatePicker.getYear();
                         int month = mDatePicker.getMonth();
                         int day = mDatePicker.getDayOfMonth();
-                        Date date = new GregorianCalendar(year, month, day).getTime();
+                        int hour = calendar.get(Calendar.HOUR);
+                        int min = calendar.get(Calendar.MINUTE);
+                        Date date = new GregorianCalendar(year, month, day, hour, min).getTime();
                         sendResult(Activity.RESULT_OK, date);
                     }
                 })
