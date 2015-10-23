@@ -78,7 +78,7 @@ public class DatePickerFragment extends DialogFragment {
 
         return v;
     }
-        //   updateDate();
+
 
 
     private void sendResult(int resultCode, Date date) {

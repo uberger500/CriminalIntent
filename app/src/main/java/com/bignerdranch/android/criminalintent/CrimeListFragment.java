@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -26,9 +28,11 @@ import java.util.List;
 public class CrimeListFragment extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+    private static final String ARG_CRIME_ID = "crime_id";
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private boolean mSubtitleVisible;
+    private Crime mCrime;
 
 
     @Override
@@ -94,6 +98,7 @@ public class CrimeListFragment extends Fragment {
                 getActivity().invalidateOptionsMenu();
                 updateSubtitle();
                 return  true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
