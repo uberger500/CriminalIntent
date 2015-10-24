@@ -21,5 +21,7 @@
         <item quantity="one">%1$s crime</item>
         <item quantity="other">%1$s crimes</item>
     </plurals>
+    <string name="crime_recycler_view_empty_text">There are no crimes!</string>
+    <string name="crime_recycler_view_empty_button">Add crime</string>
 
 </resources>

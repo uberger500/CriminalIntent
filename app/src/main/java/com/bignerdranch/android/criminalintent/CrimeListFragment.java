@@ -1,6 +1,5 @@
 package com.bignerdranch.android.criminalintent;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,12 +12,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+
 
 
 /**
@@ -28,11 +28,13 @@ import java.util.UUID;
 public class CrimeListFragment extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
-    private static final String ARG_CRIME_ID = "crime_id";
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private boolean mSubtitleVisible;
-    private Crime mCrime;
+
+    LinearLayout mNoCrimeLayout;
+    private TextView mNoCrimeText;
+    private Button mCreateCrime;
 
 
     @Override
@@ -44,7 +46,19 @@ public class CrimeListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_crime_list2, container, false);
+        mNoCrimeLayout = (LinearLayout) view.findViewById(R.id.crime_recycler_view_empty);
+        mNoCrimeText = (TextView) view.findViewById(R.id.crime_recycler_view_empty_text);
+        mNoCrimeText.setText(R.string.crime_recycler_view_empty_text);
+
+        mCreateCrime = (Button) view.findViewById(R.id.crime_recycler_view_empty_button_text);
+        mCreateCrime.setText(R.string.crime_recycler_view_empty_button);
+        mCreateCrime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createCrime();
+            }
+        });
 
         mCrimeRecyclerView = (RecyclerView) view
                 .findViewById(R.id.crime_recycler_view);
@@ -88,20 +102,23 @@ public class CrimeListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
+                createCrime();
                 return true;
             case R.id.menu_item_show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
                 getActivity().invalidateOptionsMenu();
                 updateSubtitle();
                 return  true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void createCrime() {
+        Crime crime = new Crime();
+        CrimeLab.get(getActivity()).addCrime(crime);
+        Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+        startActivity(intent);
     }
 
     private void  updateSubtitle() {
@@ -129,6 +146,12 @@ public class CrimeListFragment extends Fragment {
         }
 
         updateSubtitle();
+
+        if(crimes.size() != 0) {
+            mNoCrimeLayout.setVisibility(View.GONE);
+        } else {
+            mNoCrimeLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder
