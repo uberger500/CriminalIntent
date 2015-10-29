@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
-//import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
 
 import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
 import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
@@ -21,7 +20,6 @@ import java.util.UUID;
 public class CrimeLab {
     private static CrimeLab sCrimeLab;
 
-  //  private List<Crime> mCrimes;
     private Context mContext;
     private SQLiteDatabase mDatabase;
 
@@ -51,7 +49,6 @@ public class CrimeLab {
     }
 
     public void addCrime(Crime c) {
-
         ContentValues values = getContentValues(c);
 
         mDatabase.insert(CrimeTable.NAME, null, values);
@@ -78,17 +75,13 @@ public class CrimeLab {
         );
         return new CrimeCursorWrapper(cursor);
     }
-/*
+
     public void deleteCrime(Crime c) {
-        UUID mCrimeId = c.getId();
-        for (int i = 0; i < mCrimes.size(); i++) {
-            if (mCrimes.get(i).getId().equals(mCrimeId)) {
-                mCrimes.remove(i);
-                break;
-            }
-        }
+
+        mDatabase.delete(CrimeTable.NAME, CrimeTable.Cols.UUID + " = ?",
+                new String[]{c.getId().toString()});
     }
-*/
+
     public List<Crime> getCrimes() {
         List<Crime> crimes = new ArrayList<>();
 
