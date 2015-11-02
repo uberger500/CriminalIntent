@@ -3,6 +3,9 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
+    <include
+        layout="@layout/view_camera_and_title"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,14 +64,14 @@
         android:layout_marginRight="16dp">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/crime_suspect"
             android:layout_weight="1"
             android:text="@+id/crime_suspect_text"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@+id/crime_report_text"
             android:id="@+id/crime_report"
